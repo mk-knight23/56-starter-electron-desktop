@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #7aa2f7;
+}
+
+body {
+  @apply bg-desktop-bg text-slate-900 overflow-hidden transition-colors duration-500 antialiased;
+  min-height: 100vh;
+  -webkit-app-region: drag; /* Make whole window draggable by default */
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.dark body {
+  @apply bg-desktop-dark text-slate-100;
+}
+
+@layer components {
+  .sidebar-item {
+    @apply flex items-center space-x-3 px-4 py-3 rounded-xl transition-all cursor-pointer text-slate-400 hover:bg-white/5 hover:text-white no-drag;
+  }
+  .sidebar-item-active {
+    @apply bg-white/10 text-white shadow-lg;
+  }
+  .glass-window {
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl border border-white/10 dark:border-white/5 rounded-2xl shadow-2xl;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 dark:bg-slate-800 rounded-full;
+}

@@ -1,45 +1,64 @@
-# electron-quick-start
+# ElectronPrime - High-Fidelity Desktop Shell
 
-**Clone and run for a quick way to see Electron in action.**
+A professional desktop application shell built with **Angular 19**, **Electron 33**, and **Tailwind CSS**. Designed for building high-performance, native-feeling desktop experiences with modern web technologies.
 
-This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start) within the Electron documentation.
+## Overview
+ElectronPrime provides a secure, standalone foundation for desktop development. It features a custom frameless window, system-level IPC synchronization using Angular Signals, and a high-fidelity "Native Desktop" design system.
 
-**Use this app along with the [Electron API Demos](https://electronjs.org/#get-started) app for API code examples to help you get started.**
+## Features Comparison
 
-A basic Electron application needs just these files:
+| Feature | Legacy Version | ElectronPrime (v2.0) |
+| :--- | :--- | :--- |
+| **Framework** | Vanilla JS | **Angular 19 Standalone** |
+| **Electron** | Basic Shell | **Electron 33+ (Secure Bridge)** |
+| **UI Design** | Default Chrome | **Custom Frameless Native Aesthetic** |
+| **Communication**| Typed IPC | **Signal-based Main-to-Renderer Bridge** |
+| **Security** | Minimal | **Strict Context Isolation & Preload Security** |
+| **Tooling** | Manual | **Integrated Packaging (Electron Builder)** |
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+## Tech Stack
+- **Shell:** Electron 33 (TypeScript)
+- **Renderer:** Angular 19+ (Standalone)
+- **State:** Angular Signals (IPC Sync)
+- **Styling:** Tailwind CSS (System tokens)
+- **Icons:** Lucide Angular
 
-You can learn more about each of these components within the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start).
+## Project Structure
+```text
+├── electron/           # Main & Preload process (TS)
+├── src/app/            # Angular Renderer process
+├── dist-electron/      # Compiled Electron scripts
+└── dist/desktop-shell/ # Production Angular build
+```
 
-## To Use
+## Setup & Build Instructions
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+### Prerequisites
+- Node.js 20.x or higher
+- npm 10.x or higher
 
+### Installation
 ```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies
 npm install
-# Run the app
+```
+
+### Development
+```bash
+# Starts Angular dev server and Electron shell concurrently
 npm start
 ```
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+### Production Build
+```bash
+# Compile both processes for distribution
+npm run build
+npm run electron:build
+```
 
-## Resources for Learning Electron
+## Deployment
+Packaged as a standalone executable using `electron-builder`. Supports MacOS, Windows, and Linux distribution formats.
 
-- [electronjs.org/docs](https://electronjs.org/docs) - all of Electron's documentation
-- [electronjs.org/community#boilerplates](https://electronjs.org/community#boilerplates) - sample starter apps created by the community
-- [electron/electron-quick-start](https://github.com/electron/electron-quick-start) - a very basic starter Electron app
-- [electron/simple-samples](https://github.com/electron/simple-samples) - small applications with ideas for taking them further
-- [electron/electron-api-demos](https://github.com/electron/electron-api-demos) - an Electron app that teaches you how to use Electron
-- [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
+---
 
-## License
-
-[CC0 1.0 (Public Domain)](LICENSE.md)
+**License:** MIT
+**Architect:** mk-knight23

@@ -1,22 +1,44 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "name": "desktop-shell",
+  "version": "2.0.0",
+  "main": "dist-electron/main.js",
   "scripts": {
-    "start": "electron ."
+    "ng": "ng",
+    "start": "concurrently \"npm run ng:serve\" \"npm run electron:serve\"",
+    "ng:serve": "ng serve",
+    "electron:serve": "wait-on http://localhost:4200 && NODE_ENV=development electron .",
+    "build": "ng build --base-href ./",
+    "electron:build": "tsc -p tsconfig.electron.json",
+    "package": "npm run build && npm run electron:build && electron-builder"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.0.0",
+    "@angular/cdk": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@angular/material": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "@angular/platform-browser-dynamic": "^19.0.0",
+    "@angular/router": "^19.0.0",
+    "lucide-angular": "^0.468.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
   "devDependencies": {
-    "electron": "^11.2.1"
+    "@angular-devkit/build-angular": "^19.0.0",
+    "@angular/build": "^19.2.19",
+    "@angular/cli": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.1",
+    "electron-builder": "^24.13.3",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.2",
+    "wait-on": "^8.0.1"
   }
 }
