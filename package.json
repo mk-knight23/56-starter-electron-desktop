@@ -1,6 +1,7 @@
 {
-  "name": "desktop-shell",
+  "name": "56-starter-electron-desktop",
   "version": "2.0.0",
+  "description": "Professional desktop application shell built with Angular 19 and Electron. Desktop-native App UI theme.",
   "main": "dist-electron/main.js",
   "scripts": {
     "ng": "ng",
