@@ -6,7 +6,7 @@
 ![Electron](https://img.shields.io/badge/Electron-2B2628?style=for-the-badge&logo=electron&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-**A professional desktop application shell built with Angular 19, Electron 33, and Tailwind CSS**
+**A professional desktop application shell built with Angular 21, Electron 33, and Tailwind CSS**
 
 [GitHub](https://github.com/mk-knight23/59-Electron-Desktop-Starter)
 
@@ -37,7 +37,7 @@ ElectronPrime provides:
 
 | Feature | Legacy Version | ElectronPrime (v2.0) |
 | :--- | :--- | :--- |
-| **Framework** | Vanilla JS | **Angular 19 Standalone** |
+| **Framework** | Vanilla JS | **Angular 21 Standalone** |
 | **Reactivity** | Zone.js | **Angular Signals** |
 | **Electron** | Basic Shell | **Electron 33+ (Secure Bridge)** |
 | **UI Design** | Default Chrome | **Custom Frameless Native Aesthetic** |
@@ -52,7 +52,7 @@ ElectronPrime provides:
 ## Tech Stack
 
 - **Shell:** Electron 33 (TypeScript)
-- **Renderer:** Angular 19+ (Standalone + Signals)
+- **Renderer:** Angular 21+ (Standalone + Signals)
 - **State:** Angular Signals (IPC Sync)
 - **Styling:** Tailwind CSS (System tokens)
 - **Icons:** Inline SVGs (no external dependencies)
@@ -148,6 +148,6 @@ MIT License - See [LICENSE.md](LICENSE.md) for details.
 
 <div align="center">
 
-**Built with Angular 19 + Electron 33 + Tailwind CSS**
+**Built with Angular 21 + Electron 33 + Tailwind CSS**
 
 </div>
