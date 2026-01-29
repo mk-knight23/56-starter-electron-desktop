@@ -33,7 +33,7 @@
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
     "autoprefixer": "^10.4.20",
-    "concurrently": "^9.1.0",
+    "concurrently": "^9.2.1",
     "electron": "^33.2.1",
     "electron-builder": "^24.13.3",
     "postcss": "^8.4.49",
