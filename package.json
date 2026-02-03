@@ -10,7 +10,10 @@
     "electron:serve": "wait-on http://localhost:4200 && NODE_ENV=development electron .",
     "build": "ng build --base-href ./",
     "electron:build": "tsc -p tsconfig.electron.json",
-    "package": "npm run build && npm run electron:build && electron-builder"
+    "package": "npm run build && npm run electron:build && electron-builder",
+    "package:win": "npm run build && npm run electron:build && electron-builder --win",
+    "package:mac": "npm run build && npm run electron:build && electron-builder --mac",
+    "package:linux": "npm run build && npm run electron:build && electron-builder --linux"
   },
   "private": true,
   "dependencies": {
@@ -36,9 +39,81 @@
     "concurrently": "^9.1.0",
     "electron": "^33.2.1",
     "electron-builder": "^24.13.3",
+    "electron-reload": "^2.0.0-alpha.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.6.2",
     "wait-on": "^8.0.1"
+  },
+  "build": {
+    "appId": "com.desktopapp.app",
+    "productName": "DesktopApp",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/desktop-shell/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "rpm"],
+      "category": "Utility",
+      "icon": "build/icon.png"
+    },
+    "appImage": {
+      "license": "LICENSE.md"
+    }
   }
 }

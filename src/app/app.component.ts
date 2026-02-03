@@ -1,6 +1,18 @@
-import { Component, signal, inject, PLATFORM_ID } from '@angular/core';
+import { Component, signal, inject, PLATFORM_ID, effect, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+declare global {
+  interface Window {
+    electron: {
+      send: (channel: string, data: any) => void;
+      receive: (channel: string, func: Function) => void;
+      removeListener: (channel: string, func: Function) => void;
+      invoke: (channel: string, ...args: any[]) => Promise<any>;
+      platform: string;
+    };
+  }
+}
 
 @Component({
   selector: 'app-root',
@@ -90,16 +102,40 @@ import { FormsModule } from '@angular/forms';
       <div class="flex-1 flex flex-col min-w-0">
         <!-- Titlebar -->
         <header class="titlebar drag">
-          <div class="window-controls flex items-center gap-2">
-            <div class="window-button bg-[#ff5f57]"></div>
-            <div class="window-button bg-[#febc2e]"></div>
-            <div class="window-button bg-[#28c840]"></div>
+          <div class="window-controls flex items-center gap-2 no-drag">
+            <button
+              (click)="onMinimize()"
+              class="window-button bg-[#ffbd2e] hover:bg-[#ffbd2e]/80"
+              aria-label="Minimize"
+            ></button>
+            <button
+              (click)="onMaximize()"
+              class="window-button bg-[#28c940] hover:bg-[#28c940]/80"
+              [attr.aria-label]="isMaximized() ? 'Restore' : 'Maximize'"
+            ></button>
+            <button
+              (click)="onClose()"
+              class="window-button bg-[#ff5f57] hover:bg-[#ff5f57]/80"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="flex-1 text-center text-sm text-[#64748b] font-medium">
-            Dashboard - DesktopApp
+            Dashboard - DesktopApp v{{ appVersion() }}
           </div>
-          <div class="flex items-center gap-4">
-            <span class="text-xs text-[#64748b]">12:45 PM</span>
+          <div class="flex items-center gap-4 no-drag">
+            <button
+              (click)="showNotification()"
+              class="text-xs text-[#2563eb] hover:underline"
+            >
+              Test Notification
+            </button>
+            <button
+              (click)="openFileDialog()"
+              class="text-xs text-[#2563eb] hover:underline"
+            >
+              Test Dialog
+            </button>
+            <span class="text-xs text-[#64748b]">{{ currentTime() }}</span>
           </div>
         </header>
 
@@ -223,12 +259,137 @@ import { FormsModule } from '@angular/forms';
     :host { display: block; }
   `]
 })
-export class App {
+export class App implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
+
+  // Signals for state management
+  readonly isMaximized = signal(false);
+  readonly currentTime = signal('');
+  readonly appVersion = signal('Loading...');
+  readonly platform = signal('');
+
+  private timeInterval: any = null;
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      console.log('DesktopApp initialized');
+      this.initializeElectron();
+      this.startTimeUpdate();
+    }
+  }
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadAppInfo();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+    }
+
+    if (isPlatformBrowser(this.platformId)) {
+      window.electron.removeListener('window-status', this.handleWindowStatus);
+      window.electron.removeListener('menu-action', this.handleMenuAction);
+      window.electron.removeListener('files-opened', this.handleFilesOpened);
+    }
+  }
+
+  private initializeElectron() {
+    // Listen for window status changes
+    window.electron.receive('window-status', (status: string) => {
+      if (status === 'maximized') {
+        this.isMaximized.set(true);
+      } else if (status === 'unmaximized') {
+        this.isMaximized.set(false);
+      }
+    });
+
+    // Listen for menu actions
+    window.electron.receive('menu-action', (action: string) => {
+      console.log('Menu action:', action);
+      // Handle menu actions here
+    });
+
+    // Listen for file openings
+    window.electron.receive('files-opened', (files: string[]) => {
+      console.log('Files opened:', files);
+      // Handle opened files here
+    });
+  }
+
+  private handleWindowStatus = (status: string) => {
+    if (status === 'maximized') {
+      this.isMaximized.set(true);
+    } else if (status === 'unmaximized') {
+      this.isMaximized.set(false);
+    }
+  };
+
+  private handleMenuAction = (action: string) => {
+    console.log('Menu action:', action);
+  };
+
+  private handleFilesOpened = (files: string[]) => {
+    console.log('Files opened:', files);
+  };
+
+  private async loadAppInfo() {
+    try {
+      const version = await window.electron.invoke('get-app-version');
+      this.appVersion.set(version);
+
+      const platform = await window.electron.invoke('get-platform');
+      this.platform.set(platform);
+    } catch (error) {
+      console.error('Failed to load app info:', error);
+    }
+  }
+
+  private startTimeUpdate() {
+    this.updateTime();
+    this.timeInterval = setInterval(() => this.updateTime(), 1000);
+  }
+
+  private updateTime() {
+    const now = new Date();
+    this.currentTime.set(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  }
+
+  // Window control methods
+  onMinimize() {
+    window.electron.send('window-control', 'minimize');
+  }
+
+  onMaximize() {
+    window.electron.send('window-control', 'maximize');
+  }
+
+  onClose() {
+    window.electron.send('window-control', 'close');
+  }
+
+  // Example: Show notification
+  async showNotification() {
+    await window.electron.invoke('show-notification', {
+      title: 'DesktopApp',
+      body: 'This is a sample notification from your desktop app!',
+    });
+  }
+
+  // Example: Open file dialog
+  async openFileDialog() {
+    try {
+      const result = await window.electron.invoke('show-message-box', {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        defaultId: 0,
+        title: 'Confirm',
+        message: 'Are you sure you want to perform this action?',
+      });
+      console.log('Dialog result:', result);
+    } catch (error) {
+      console.error('Failed to show dialog:', error);
     }
   }
 }

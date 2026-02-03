@@ -3,34 +3,58 @@
 @tailwind utilities;
 
 :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --sidebar-bg: #1e1e2e;
-    --sidebar-hover: #2a2a3c;
-    --sidebar-active: #3a3a4c;
-    --content-bg: #f8fafc;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --border-color: #e2e8f0;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --primary-light: #6366F1;
+    --secondary: #818CF8;
+    --cta: #22C55E;
+    --sidebar-bg: #1E1B4B;
+    --sidebar-hover: #312E81;
+    --sidebar-active: #4F46E5;
+    --content-bg: #EEF2FF;
+    --text-primary: #312E81;
+    --text-secondary: #6366F1;
+    --border-color: #C7D2FE;
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --danger: #EF4444;
 }
 
 * {
     -webkit-app-region: no-drag;
 }
 
+/* Platform-specific adjustments */
 body {
-    @apply bg-[#f8fafc] text-[#1e293b] antialiased overflow-hidden;
+    @apply antialiased overflow-hidden;
+    background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+    color: #312E81;
     min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* macOS-specific font adjustments */
+@media (display-mode: window-controls-overlay) {
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', sans-serif;
+    }
+}
+
+/* Windows-specific adjustments */
+body.windows {
+    font-family: 'Segoe UI', 'Plus Jakarta Sans', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Linux-specific adjustments */
+body.linux {
+    font-family: system-ui, -apple-system, 'Plus Jakarta Sans', sans-serif;
+}
+
 h1, h2, h3, h4, h5, h6 {
     @apply font-semibold;
+    color: #312E81;
 }
 
 .no-drag {
@@ -43,27 +67,54 @@ h1, h2, h3, h4, h5, h6 {
 
 @layer components {
     .sidebar {
-        @apply w-64 bg-[#1e1e2e] h-screen flex flex-col;
+        @apply w-64 h-screen flex flex-col;
+        background: linear-gradient(180deg, #312E81 0%, #1E1B4B 100%);
+        /* Platform-specific shadow */
+    }
+
+    /* macOS sidebar shadow */
+    @supports (-webkit-appearance: none) {
+        .sidebar {
+            box-shadow: 2px 0 10px rgba(79, 70, 229, 0.15);
+        }
     }
 
     .sidebar-item {
-        @apply flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-[#a1a1aa] text-sm font-medium transition-all cursor-pointer;
+        @apply flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-sm font-medium transition-all cursor-pointer;
+        color: #A5B4FC;
     }
 
     .sidebar-item:hover {
-        @apply bg-[#2a2a3c] text-white;
+        background: rgba(255, 255, 255, 0.1);
+        color: #E0E7FF;
     }
 
     .sidebar-item-active {
-        @apply bg-[#3a3a4c] text-white;
+        background: rgba(79, 70, 229, 0.3);
+        color: #FFFFFF;
+        box-shadow: inset 3px 0 0 0 #818CF8;
     }
 
     .sidebar-section-title {
-        @apply px-4 py-3 text-xs font-bold text-[#71717a] uppercase tracking-wider;
+        @apply px-4 py-3 text-xs font-bold uppercase tracking-wider;
+        color: #6366F1;
     }
 
     .titlebar {
-        @apply h-10 flex items-center justify-between px-4 bg-[#f8fafc] border-b border-[#e2e8f0] drag;
+        @apply h-10 flex items-center justify-between px-4 drag;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(79, 70, 229, 0.1);
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.08);
+        /* Platform-specific titlebar height adjustments */
+    }
+
+    /* macOS titlebar */
+    @supports (-webkit-appearance: none) {
+        .titlebar {
+            height: 28px;
+        }
     }
 
     .titlebar-button {
@@ -71,31 +122,126 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .content-area {
-        @apply flex-1 bg-[#f8fafc] overflow-auto;
+        @apply flex-1 overflow-auto;
     }
 
     .window-controls {
-        @apply flex items-center gap-3;
+        @apply flex items-center gap-2;
     }
 
     .window-button {
-        @apply w-3 h-3 rounded-full cursor-pointer transition-all hover:opacity-80;
+        @apply w-3 h-3 rounded-full cursor-pointer transition-all hover:scale-110;
+        /* macOS traffic light colors */
+    }
+
+    @supports (-webkit-appearance: none) {
+        .window-button {
+            width: 12px;
+            height: 12px;
+        }
+    }
+
+    /* Windows 11 style */
+    body.windows .window-button {
+        width: 46px;
+        height: 100%;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body.windows .window-button:hover {
+        background: rgba(79, 70, 229, 0.1);
     }
 
     .card {
-        @apply bg-white border border-[#e2e8f0] rounded-xl shadow-sm hover:shadow-md transition-shadow;
+        @apply rounded-xl transition-shadow;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 12px -2px rgba(79, 70, 229, 0.15), 0 4px 6px -2px rgba(79, 70, 229, 0.1);
+    }
+
+    /* Platform-specific shadow */
+    @supports (-webkit-appearance: none) {
+        .card {
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.12), 0 2px 4px rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    body.windows .card {
+        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.15);
     }
 
     .button-primary {
-        @apply inline-flex items-center justify-center px-4 py-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-medium text-sm rounded-lg transition-colors;
+        @apply inline-flex items-center justify-center px-4 py-2 text-white font-medium text-sm rounded-lg transition-all;
+        background: #4F46E5;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    }
+
+    .button-primary:hover {
+        background: #4338CA;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        transform: translateY(-1px);
+    }
+
+    /* Windows 11 button style */
+    body.windows .button-primary {
+        border-radius: 4px;
+    }
+
+    /* macOS button style */
+    @supports (-webkit-appearance: none) {
+        .button-primary {
+            border-radius: 6px;
+        }
     }
 
     .button-secondary {
-        @apply inline-flex items-center justify-center px-4 py-2 bg-white border border-[#e2e8f0] hover:bg-[#f8fafc] text-[#1e293b] font-medium text-sm rounded-lg transition-colors;
+        @apply inline-flex items-center justify-center px-4 py-2 font-medium text-sm rounded-lg transition-all;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(79, 70, 229, 0.2);
+        color: #4F46E5;
+    }
+
+    .button-secondary:hover {
+        background: rgba(255, 255, 255, 0.8);
+        border-color: rgba(79, 70, 229, 0.3);
     }
 
     .input {
-        @apply w-full px-3 py-2 bg-white border border-[#e2e8f0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all;
+        @apply w-full px-3 py-2 rounded-lg text-sm focus:outline-none transition-all;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(79, 70, 229, 0.2);
+        color: #312E81;
+    }
+
+    .input:focus {
+        ring: 2px;
+        ring-color: #4F46E5;
+        border-color: transparent;
+    }
+
+    /* Platform-specific input styles */
+    @supports (-webkit-appearance: none) {
+        .input {
+            border-radius: 6px;
+        }
+    }
+
+    body.windows .input {
+        border-radius: 4px;
     }
 
     .badge {
@@ -103,15 +249,18 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .badge-success {
-        @apply bg-[#dcfce7] text-[#166534];
+        @apply text-[#166534];
+        background: #D1FAE5;
     }
 
     .badge-warning {
-        @apply bg-[#fef3c7] text-[#92400e];
+        @apply text-[#92400e];
+        background: #FEF3C7;
     }
 
     .badge-danger {
-        @apply bg-[#fee2e2] text-[#991b1b];
+        @apply text-[#991b1b];
+        background: #FEE2E2;
     }
 
     .table {
@@ -119,15 +268,20 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .table th {
-        @apply px-4 py-3 text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider bg-[#f8fafc] border-b border-[#e2e8f0];
+        @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider border-b;
+        background: rgba(255, 255, 255, 0.5);
+        color: #312E81;
+        border-color: rgba(79, 70, 229, 0.1);
     }
 
     .table td {
-        @apply px-4 py-3 border-b border-[#f1f5f9] text-[#1e293b];
+        @apply px-4 py-3 border-b;
+        color: #4F46E5;
+        border-color: rgba(79, 70, 229, 0.08);
     }
 
     .table tr:hover td {
-        @apply bg-[#f8fafc];
+        background: rgba(255, 255, 255, 0.3);
     }
 
     .status-dot {
@@ -135,15 +289,15 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .status-online {
-        @apply bg-[#10b981];
+        @apply bg-[#22C55E];
     }
 
     .status-offline {
-        @apply bg-[#94a3b8];
+        @apply bg-[#818CF8];
     }
 
     .status-busy {
-        @apply bg-[#ef4444];
+        @apply bg-[#EF4444];
     }
 
     .avatar {
@@ -151,7 +305,8 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .divider {
-        @apply h-px bg-[#e2e8f0] my-4;
+        @apply h-px my-4;
+        background: rgba(79, 70, 229, 0.1);
     }
 }
 
@@ -164,9 +319,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-[#cbd5e1] rounded-full;
+    @apply rounded-full;
+    background: #C7D2FE;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-[#94a3b8];
+    background: #A5B4FC;
+}
+
+/* Platform-specific scrollbar adjustments */
+@supports (-webkit-appearance: none) {
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(79, 70, 229, 0.3);
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+        background: rgba(79, 70, 229, 0.4);
+    }
+}
+
+body.windows .custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
+}
+
+body.windows .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #C7D2FE;
+    border-radius: 0;
+}
+
+body.windows .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #A5B4FC;
 }
