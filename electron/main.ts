@@ -29,7 +29,7 @@ function createWindow() {
 
   // In production, load the built index.html. In dev, load localhost.
   const appUrl = process.env['NODE_ENV'] === 'development'
-    ? 'http://localhost:4200'
+    ? 'http://localhost:4201'
     : `file://${path.join(__dirname, '../dist/desktop-shell/index.html')}`;
 
   mainWindow.loadURL(appUrl);

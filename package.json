@@ -6,8 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"npm run ng:serve\" \"npm run electron:serve\"",
-    "ng:serve": "ng serve",
-    "electron:serve": "wait-on http://localhost:4200 && NODE_ENV=development electron .",
+    "ng:serve": "ng serve --port 4201",
+    "electron:serve": "wait-on http://localhost:4201 && NODE_ENV=development electron .",
     "build": "ng build --base-href ./",
     "electron:build": "tsc -p tsconfig.electron.json",
     "package": "npm run build && npm run electron:build && electron-builder",
@@ -66,11 +66,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ]
     },
@@ -92,11 +98,17 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ],
       "icon": "build/icon.ico"
@@ -108,7 +120,11 @@
       "deleteAppDataOnUninstall": false
     },
     "linux": {
-      "target": ["AppImage", "deb", "rpm"],
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
       "category": "Utility",
       "icon": "build/icon.png"
     },
