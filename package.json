@@ -5,6 +5,7 @@
   "author": "Your Name <your.email@example.com>",
   "main": "dist-electron/main.js",
   "scripts": {
+    "production": "npm run build && npm start",
     "ng": "ng",
     "start": "concurrently \"npm run ng:serve\" \"npm run electron:serve\"",
     "ng:serve": "ng serve --port 4201",
