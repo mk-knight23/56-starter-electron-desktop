@@ -40,7 +40,7 @@
     "@angular/compiler-cli": "^19.0.0",
     "@types/jasmine": "^6.0.0",
     "@types/karma": "^6.3.9",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.27",
     "concurrently": "^9.1.0",
     "electron": "^33.2.1",
     "electron-builder": "^24.13.3",
