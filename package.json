@@ -29,7 +29,7 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
-    "electron-updater": "^6.7.3",
+    "electron-updater": "^6.8.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
